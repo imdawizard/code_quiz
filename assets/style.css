@@ -9,7 +9,7 @@ body {
     text-align: center;
     padding: 1rem;
   }
-  
+
   main {
     max-width: 800px;
     margin: 0 auto;
@@ -20,15 +20,19 @@ body {
     margin: 0;
   }
   
-  #start-page, #quiz-page, #score-page {
-    display: none;
+  .page {
+    display: block;
   }
   
-  #start-button, #next-button, #submit-button {
+  .btn {
     display: block;
     margin: 1rem auto;
   }
-  
+
+  .hide {
+    display: none;
+  }
+
   #timer {
     margin-top: 2rem;
     text-align: right;
