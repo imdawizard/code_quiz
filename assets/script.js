@@ -27,18 +27,24 @@ var questionEl = document.querySelector("#question");
 var choicesEl = document.querySelector("#choices");
 var feedbackEl = document.querySelector("#feedback");
 var timeEl = document.querySelector("#time-remaining");
-var questionPageE1 = document.querySelector('#quiz-page');
+
 var endbtnEl = document.querySelector("#End-button");
 var submitbtn = document.querySelector("#submit-button");
-var scores = [""];
-// var scores = localStorage.getItem("scores");
+var rtnbtn = document.querySelector("#return-button");
+//screens
+var startScreenE1 = document.querySelector("#start-page");
+var questionPageE1 = document.querySelector('#quiz-page');
+var endScreenEl = document.querySelector("#end-page");
+var scorePageEl = document.querySelector("#score-page");
+
+// var scores = JSON.parse(localStorage.getItem('scores')) || [];
 
 // var scores = localStorage.getItem
 
 // Function to start the quiz
 function startQuiz() {
   // Hide the start button
-  startButtonEl.classList.add("hide");
+  startScreenE1.classList.add("hide");
   // Show the question container
     questionPageE1.classList.remove("hide");
   // Start the timer
@@ -112,21 +118,41 @@ function endQuiz() {
   // Display the final score
   var scoreEl = document.querySelector("#final-score");
   scoreEl.textContent = time;
-  scores.unshift(scoreEl);
-  console.log(scores);
-  localStorage.setItem('scores', scores);
+//   var scores = JSON.parse(localStorage.getItem('scores')) || [];
+//   scores.unshift(parseINT(scoreEl.textContent));
+//   localStorage.setItem('scores', JSON.stringify(scores));
 }
 
 function displayScores() {
-    console.log("work?")
-    startQuiz();
-    // var startpageEl = document.querySelector('#start-page');
-    // startpageEl.classList.add("hide");
-    // console.log("work?");
-    // //diplay scores to screen
-    // var scorePageEl = document.querySelector("#score-page")
-    // scorePageEl.classList.remove("hide");
-    // console.log("work again?");
+    // Hide the question container
+  questionPageE1.classList.add("hide");
+
+  // Hide the end screen
+  endScreenEl.classList.add("hide");
+
+// hide the start page
+startScreenE1.classList.add("hide");
+
+  // Show the scores screen
+  scorePageEl.classList.remove("hide");
+
+  // Get the scores from localStorage
+//   var scores = JSON.parse(localStorage.getItem('scores'));
+
+  // Loop through the scores and display them on the screen
+//   var scoreListEl = document.querySelector("#score-list");
+//   scoreListEl.innerHTML = "";
+//   scores.forEach(function(score) {
+//     var scoreItemEl = document.createElement("li");
+//     scoreItemEl.textContent = score;
+//     scoreListEl.appendChild(scoreItemEl);
+//   });
+}
+
+function backToQuiz() {
+    scorePageEl.classList.add('hide');
+    startScreenE1.classList.remove("hide");
+
 }
 
 
@@ -145,4 +171,11 @@ function clockTick() {
 // Add event listener for the start button
 startButtonEl.addEventListener("click", () => { console.log("sup"); startQuiz(); } );
 endbtnEl.addEventListener("click", () =>  endQuiz() );
-submitbtn.addEventListener("click", displayScores);
+submitbtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    displayScores();
+});
+rtnbtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    backToQuiz();
+});
