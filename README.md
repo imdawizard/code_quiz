@@ -49,7 +49,7 @@ Email: nate.is.cool.yeah@gmail.com
 https://github.com/imdawizard/code_quiz
 
 ## Link to deployed application:
-https://imdawizard.github.io/code_quiz
+https://imdawizard.github.io/code_quiz/
 
 ## Screenshots:
 ![Alt text](image.png)
