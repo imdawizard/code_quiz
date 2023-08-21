@@ -1,5 +1,5 @@
 # Code Quiz
-The project for week 4--a dynamic html code quiz
+The project for week 4--A dynamic html code quiz
 
 ## Table of Contents
  - [Installation](#installation)
