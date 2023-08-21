@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", function () {
+
 // Set variables for the quiz
 var questions = [
   {
@@ -36,10 +38,12 @@ var startScreenE1 = document.querySelector("#start-page");
 var questionPageE1 = document.querySelector('#quiz-page');
 var endScreenEl = document.querySelector("#end-page");
 var scorePageEl = document.querySelector("#score-page");
+var scoreEl = document.querySelector("#final-score");
 
-// var scores = JSON.parse(localStorage.getItem('scores')) || [];
+let highScores = [];
 
-// var scores = localStorage.getItem
+var scores = JSON.parse(localStorage.getItem("highScores")) || [];
+console.log(scores);
 
 // Function to start the quiz
 function startQuiz() {
@@ -68,7 +72,7 @@ function displayQuestion() {
   // Loop through the choices and create buttons for each one
   currentQuestion.choices.forEach(function(choice, i) {
     var choiceButton = document.createElement("button");
-    choiceButton.setAttribute("class", "choice");
+    choiceButton.setAttribute("class", "btn btn-primary btn-lg");
     choiceButton.setAttribute("value", choice);
     choiceButton.textContent = i + 1 + ". " + choice;
     choiceButton.onclick = checkAnswer;
@@ -83,13 +87,17 @@ function checkAnswer() {
 
   // Check if the answer is correct
   if (userAnswer === questions[currentQuestionIndex].answer) {
+    //pring green correct
     feedbackEl.classList.remove("hide");
     feedbackEl.textContent = "Correct!";
+    feedbackEl.classList.add("text-success", "fst-italic", "fw-bolder");
   } else {
+    //print red wrong! on screen and subtract 10 sec from clock
     time -= 10;
     timeEl.textContent = time;
     feedbackEl.classList.remove("hide");
     feedbackEl.textContent = "Wrong!";
+    feedbackEl.classList.add("text-danger", "fst-italic", "fw-bolder");
   }
 
   // Move to the next question
@@ -110,43 +118,51 @@ function endQuiz() {
 
   // Hide the question container
   questionPageE1.classList.add("hide");
-
+  scoreEl = time;
+  time = 60;
   // Show the end screen
   var endScreenEl = document.querySelector("#end-page");
   endScreenEl.classList.remove("hide");
 
   // Display the final score
-  var scoreEl = document.querySelector("#final-score");
-  scoreEl.textContent = time;
-//   var scores = JSON.parse(localStorage.getItem('scores')) || [];
-//   scores.unshift(parseINT(scoreEl.textContent));
-//   localStorage.setItem('scores', JSON.stringify(scores));
+  var endingDetails = document.querySelector("#final-page-details");
+  endingDetails.innerHTML = `Your Score is: <strong>${scoreEl}</strong>`;
 }
 
 function displayScores() {
+//add initials to scores
+let initials = document.getElementById("initials");
+let playersRecord = {
+  name: initials.value,
+  score: scoreEl
+}
+//sort scores numericaly
+highScores.push(playersRecord);
+highScores.sort(function(a, b) {
+  return b.score - a.score;
+});
+
+//save the scores to local storage
+localStorage.setItem("highScores", JSON.stringify(highScores));
     // Hide the question container
   questionPageE1.classList.add("hide");
-
   // Hide the end screen
   endScreenEl.classList.add("hide");
-
 // hide the start page
 startScreenE1.classList.add("hide");
-
   // Show the scores screen
   scorePageEl.classList.remove("hide");
+  // scoreEl.appendChild
+  let scoresList = document.getElementById("final-score");
+  scoresList.innerHTML = "";
 
-  // Get the scores from localStorage
-//   var scores = JSON.parse(localStorage.getItem('scores'));
-
-  // Loop through the scores and display them on the screen
-//   var scoreListEl = document.querySelector("#score-list");
-//   scoreListEl.innerHTML = "";
-//   scores.forEach(function(score) {
-//     var scoreItemEl = document.createElement("li");
-//     scoreItemEl.textContent = score;
-//     scoreListEl.appendChild(scoreItemEl);
-//   });
+  //displaying the highscores to screen
+  highScores.forEach((scores) => {
+    let listItem = document.createElement("li");
+    listItem.classList.add("list-group-item")
+    listItem.textContent = `${scores.name}: ${scores.score}`;
+    scoresList.appendChild(listItem);
+  })
 }
 
 function backToQuiz() {
@@ -169,7 +185,7 @@ function clockTick() {
 }
 
 // Add event listener for the start button
-startButtonEl.addEventListener("click", () => { console.log("sup"); startQuiz(); } );
+startButtonEl.addEventListener("click", () => startQuiz() );
 endbtnEl.addEventListener("click", () =>  endQuiz() );
 submitbtn.addEventListener("click", function(event) {
     event.preventDefault();
@@ -178,4 +194,6 @@ submitbtn.addEventListener("click", function(event) {
 rtnbtn.addEventListener("click", function(event) {
     event.preventDefault();
     backToQuiz();
+});
+
 });
